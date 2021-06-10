@@ -6,6 +6,7 @@ let app = require('express')();
 let http = require('http').Server(app);
 
 let io = require('socket.io')(http);
+process.env.PORT=3000;
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -22,11 +23,13 @@ io.on('connection', (socket) => {
 
 
 
-    socket.on('chat-message', (msg) => {
+    socket.on('chat-message', (msg, user_id) => {
         socket.broadcast.emit('chat-message', msg)
+        console.log(user_id);
     })
     socket.on('joined', (name) => {
         socket.broadcast.emit('joined', name)
+        console.log("join user " + name);
     })
     socket.on('leaved', (name) => {
         socket.broadcast.emit('leaved', name)
@@ -43,6 +46,5 @@ io.on('connection', (socket) => {
 })
 
 http.listen(process.env.PORT, () => {
-    console.log('Server is started at http://localhost:3000')
+    console.log('Server is started at http://localhost:'+process.env.PORT)
 })
-
