@@ -3,9 +3,9 @@ let app = require('express')();
 let http = require('http').Server(app);
 
 let io = require('socket.io')(http);
-
+process.env.PORT=80;
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+   return res.json("socket server connected");
 })
 
 io.on('connection', (socket) => {
@@ -40,5 +40,5 @@ io.on('connection', (socket) => {
 })
 
 http.listen(process.env.PORT, () => {
-    console.log('Server is started at http://localhost:3000')
+    console.log('Server is started at http://localhost:'+process.env.PORT)
 })
